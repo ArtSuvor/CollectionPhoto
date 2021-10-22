@@ -10,13 +10,15 @@ import UIKit
 class PhotoCollectionViewController: UICollectionViewController {
     
 //MARK: - Service
-    private let network = NetworkService()
+    private let network = NetworkDataFetcher()
     
 //MARK: - Properties
     private let cellId = "PhotoCollectionViewCell"
     private let titleCollectionView = "Photo"
+    private var timer = Timer()
+    private var photos = [Photo]()
     
-//MARK: - UI
+//MARK: - UI elements
     private lazy var addBarButtonItem: UIBarButtonItem = {
         UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addBarButtonTapped))
     }()
@@ -66,20 +68,27 @@ class PhotoCollectionViewController: UICollectionViewController {
     }
     
 //MARK: - Collection Methods
-//    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        5
-//    }
-//
-//    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
-//        cell.backgroundColor = .red
-//        return cell
-//    }
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        photos.count
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        
+        return cell
+    }
 }
 
 //MARK: - Extension SearchBar
 extension PhotoCollectionViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { _ in
+            self.network.fetchImage(searchTerm: searchText) {[weak self] searchResults in
+                guard let fetchPhotos = searchResults,
+                      let self = self else { return }
+                self.photos = fetchPhotos.results
+            }
+        })
     }
 }
