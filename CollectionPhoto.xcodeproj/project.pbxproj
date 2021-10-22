@@ -13,6 +13,7 @@
 		6E59E05E2723185000571D9F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E59E05C2723185000571D9F /* LaunchScreen.storyboard */; };
 		6E59E066272318A700571D9F /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E59E065272318A700571D9F /* MainTabBarViewController.swift */; };
 		6E59E06827231C6A00571D9F /* PhotoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E59E06727231C6A00571D9F /* PhotoCollectionViewController.swift */; };
+		6E59E06C272324E700571D9F /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E59E06B272324E700571D9F /* NetworkService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		6E59E05F2723185000571D9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6E59E065272318A700571D9F /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		6E59E06727231C6A00571D9F /* PhotoCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewController.swift; sourceTree = "<group>"; };
+		6E59E06B272324E700571D9F /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +58,32 @@
 		6E59E0502723184E00571D9F /* CollectionPhoto */ = {
 			isa = PBXGroup;
 			children = (
+				6E59E06A272324CF00571D9F /* Network */,
+				6E59E069272324A300571D9F /* ViewControllers */,
 				6E59E0512723184E00571D9F /* AppDelegate.swift */,
-				6E59E065272318A700571D9F /* MainTabBarViewController.swift */,
-				6E59E06727231C6A00571D9F /* PhotoCollectionViewController.swift */,
-				6E59E0552723184E00571D9F /* ViewController.swift */,
 				6E59E05A2723185000571D9F /* Assets.xcassets */,
 				6E59E05C2723185000571D9F /* LaunchScreen.storyboard */,
 				6E59E05F2723185000571D9F /* Info.plist */,
 			);
 			path = CollectionPhoto;
+			sourceTree = "<group>";
+		};
+		6E59E069272324A300571D9F /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				6E59E065272318A700571D9F /* MainTabBarViewController.swift */,
+				6E59E06727231C6A00571D9F /* PhotoCollectionViewController.swift */,
+				6E59E0552723184E00571D9F /* ViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		6E59E06A272324CF00571D9F /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				6E59E06B272324E700571D9F /* NetworkService.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,6 +156,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E59E06C272324E700571D9F /* NetworkService.swift in Sources */,
 				6E59E06827231C6A00571D9F /* PhotoCollectionViewController.swift in Sources */,
 				6E59E0562723184E00571D9F /* ViewController.swift in Sources */,
 				6E59E066272318A700571D9F /* MainTabBarViewController.swift in Sources */,

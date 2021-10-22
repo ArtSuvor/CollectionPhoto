@@ -9,9 +9,14 @@ import UIKit
 
 class PhotoCollectionViewController: UICollectionViewController {
     
+//MARK: - Service
+    private let network = NetworkService()
+    
 //MARK: - Properties
     private let cellId = "PhotoCollectionViewCell"
     private let titleCollectionView = "Photo"
+    
+//MARK: - UI
     private lazy var addBarButtonItem: UIBarButtonItem = {
         UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addBarButtonTapped))
     }()
@@ -29,7 +34,6 @@ class PhotoCollectionViewController: UICollectionViewController {
     }
     
 //MARK: - Functions
-    
     private func setupCollectionView() {
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.backgroundColor = .green
@@ -53,7 +57,6 @@ class PhotoCollectionViewController: UICollectionViewController {
     }
     
 //MARK: - Navigation action
-    
     @objc private func addBarButtonTapped() {
         
     }
@@ -63,11 +66,10 @@ class PhotoCollectionViewController: UICollectionViewController {
     }
     
 //MARK: - Collection Methods
-    
 //    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 //        5
 //    }
-//    
+//
 //    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 //        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
 //        cell.backgroundColor = .red
@@ -78,6 +80,6 @@ class PhotoCollectionViewController: UICollectionViewController {
 //MARK: - Extension SearchBar
 extension PhotoCollectionViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print(searchText)
+        
     }
 }
