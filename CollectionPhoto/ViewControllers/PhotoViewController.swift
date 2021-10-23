@@ -28,6 +28,7 @@ class PhotoViewController: UIViewController {
         let collection = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.backgroundColor = .secondarySystemBackground
+        collection.showsVerticalScrollIndicator = false
         return collection
     }()
     private lazy var addBarButtonItem: UIBarButtonItem = {
@@ -94,7 +95,7 @@ class PhotoViewController: UIViewController {
         guard let tabBar = tabBarController as? MainTabBarViewController,
               let navVC = tabBar.viewControllers?[1] as? UINavigationController,
               let favVC = navVC.topViewController as? FavouritesViewController else { return }
-        favVC.photos = selectedImages
+        favVC.photos.append(contentsOf: selectedImages)
         favVC.collectionView.reloadData()
         refresh()
     }
