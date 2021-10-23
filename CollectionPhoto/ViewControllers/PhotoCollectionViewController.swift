@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PhotoCollectionViewController: UICollectionViewController {
+class PhotoCollectionViewController: UIViewController {
     
 //MARK: - Service
     private let network = NetworkDataFetcher()
@@ -24,6 +24,11 @@ class PhotoCollectionViewController: UICollectionViewController {
     }
     
 //MARK: - UI elements
+    private var collectionView: UICollectionView = {
+        let collection = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        return collection
+    }()
     private lazy var addBarButtonItem: UIBarButtonItem = {
         UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addBarButtonTapped))
     }()
@@ -39,16 +44,21 @@ class PhotoCollectionViewController: UICollectionViewController {
         setupNavigationBar()
         setupSearchBar()
         updateNavigationButtonState()
+        setConstraints()
     }
     
 //MARK: - Functions
     private func setupCollectionView() {
+        view.addSubview(collectionView)
         collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.reuseId)
         collectionView.backgroundColor = .green
         
         collectionView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         collectionView.contentInsetAdjustmentBehavior = .automatic
         collectionView.allowsMultipleSelection = true
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
     }
     
     private func setupNavigationBar() {
@@ -96,26 +106,28 @@ class PhotoCollectionViewController: UICollectionViewController {
         shareController.popoverPresentationController?.permittedArrowDirections = .any
         present(shareController, animated: true, completion: nil)
     }
+}
     
 //MARK: - Collection Methods
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+extension PhotoCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         photos.count
     }
 
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.reuseId, for: indexPath) as? PhotoCollectionViewCell else { return UICollectionViewCell() }
         cell.photo = photos[indexPath.item]
         return cell
     }
     
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         updateNavigationButtonState()
         guard let cell = collectionView.cellForItem(at: indexPath) as? PhotoCollectionViewCell,
         let image = cell.photoImageView.image else { return }
             selectedImages.append(image)
     }
     
-    override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         updateNavigationButtonState()
         guard let cell = collectionView.cellForItem(at: indexPath) as? PhotoCollectionViewCell,
         let image = cell.photoImageView.image else { return }
@@ -128,7 +140,7 @@ class PhotoCollectionViewController: UICollectionViewController {
 //MARK: - Extension SearchBar
 extension PhotoCollectionViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
+        timer.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { _ in
             self.network.fetchImage(searchTerm: searchText) {[weak self] searchResults in
                 guard let fetchPhotos = searchResults,
@@ -157,5 +169,16 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         sectionInserts.left
+    }
+}
+
+//MARK: - SetConstaints
+extension PhotoCollectionViewController {
+    private func setConstraints() {
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
     }
 }

@@ -35,7 +35,7 @@ class MainTabBarViewController: UITabBarController {
     private func setupViewControllers() {
         guard let imagePhoto = UIImage(systemName: nameImagePhotoVC),
               let imageFavourites = UIImage(systemName: nameImageFacVC) else { return }
-        let photoVC = PhotoCollectionViewController(collectionViewLayout: UICollectionViewLayout())
+        let photoVC = PhotoCollectionViewController()
         
         viewControllers = [
         generateNavifationController(rootViewController: photoVC, title: titlePhotoVC, image: imagePhoto),
