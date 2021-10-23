@@ -22,6 +22,9 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     var photo: Photo! {
         didSet {
             let photoUrl = photo.urls["regular"]
+            guard let imageUrl = photoUrl,
+                  let url = URL(string: imageUrl) else { return }
+            photoImageView.sd_setImage(with: url, completed: nil)
         }
     }
     
@@ -34,7 +37,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    private let photoImageView: UIImageView = {
+    let photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .systemGray3
