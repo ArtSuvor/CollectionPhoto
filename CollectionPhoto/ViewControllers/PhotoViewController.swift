@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PhotoCollectionViewController: UIViewController {
+class PhotoViewController: UIViewController {
     
 //MARK: - Service
     private let network = NetworkDataFetcher()
@@ -27,6 +27,7 @@ class PhotoCollectionViewController: UIViewController {
     private var collectionView: UICollectionView = {
         let collection = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
         collection.translatesAutoresizingMaskIntoConstraints = false
+        collection.backgroundColor = .secondarySystemBackground
         return collection
     }()
     private lazy var addBarButtonItem: UIBarButtonItem = {
@@ -51,7 +52,6 @@ class PhotoCollectionViewController: UIViewController {
     private func setupCollectionView() {
         view.addSubview(collectionView)
         collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.reuseId)
-        collectionView.backgroundColor = .green
         
         collectionView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         collectionView.contentInsetAdjustmentBehavior = .automatic
@@ -91,7 +91,12 @@ class PhotoCollectionViewController: UIViewController {
     
 //MARK: - Navigation action
     @objc private func addBarButtonTapped() {
-        
+        guard let tabBar = tabBarController as? MainTabBarViewController,
+              let navVC = tabBar.viewControllers?[1] as? UINavigationController,
+              let favVC = navVC.topViewController as? FavouritesViewController else { return }
+        favVC.photos = selectedImages
+        favVC.collectionView.reloadData()
+        refresh()
     }
     
     @objc private func actionBarButtonTapped(sender: UIBarButtonItem) {
@@ -109,7 +114,7 @@ class PhotoCollectionViewController: UIViewController {
 }
     
 //MARK: - Collection Methods
-extension PhotoCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension PhotoViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         photos.count
     }
@@ -138,7 +143,7 @@ extension PhotoCollectionViewController: UICollectionViewDelegate, UICollectionV
 }
 
 //MARK: - Extension SearchBar
-extension PhotoCollectionViewController: UISearchBarDelegate {
+extension PhotoViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         timer.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { _ in
@@ -153,7 +158,7 @@ extension PhotoCollectionViewController: UISearchBarDelegate {
 }
 
 //MARK: - Extension FlowLayout
-extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
+extension PhotoViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let photo = photos[indexPath.item]
         let paddingSpace = sectionInserts.left * (itemsPerRow + 1)
@@ -173,7 +178,7 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
 }
 
 //MARK: - SetConstaints
-extension PhotoCollectionViewController {
+extension PhotoViewController {
     private func setConstraints() {
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
