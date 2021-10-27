@@ -70,6 +70,8 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupSubviews() {
+        layer.cornerRadius = 10
+        layer.masksToBounds = true
         addSubview(photoImageView)
         photoImageView.addSubview(checkmark)
     }

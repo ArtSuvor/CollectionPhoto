@@ -18,19 +18,13 @@ class PhotoViewController: UIViewController {
     private var photos = [Photo]()
     private var selectedImages = [UIImage]()
     private let itemsPerRow: CGFloat = 2
-    private let sectionInserts = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+    private let sectionInserts = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     private var numberOfSelectedPhotos: Int {
         collectionView.indexPathsForSelectedItems?.count ?? 0
     }
     
 //MARK: - UI elements
-    private var collectionView: UICollectionView = {
-        let collection = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
-        collection.translatesAutoresizingMaskIntoConstraints = false
-        collection.backgroundColor = .secondarySystemBackground
-        collection.showsVerticalScrollIndicator = false
-        return collection
-    }()
+    private var collectionView: UICollectionView!
     private lazy var addBarButtonItem: UIBarButtonItem = {
         UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addBarButtonTapped))
     }()
@@ -43,23 +37,36 @@ class PhotoViewController: UIViewController {
         super.viewDidLoad()
         
         setupCollectionView()
+        setConstraints()
         setupNavigationBar()
         setupSearchBar()
         updateNavigationButtonState()
-        setConstraints()
     }
     
 //MARK: - Functions
     private func setupCollectionView() {
-        view.addSubview(collectionView)
+        collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: createLayout())
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .secondarySystemBackground
         collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.reuseId)
-        
-        collectionView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         collectionView.contentInsetAdjustmentBehavior = .automatic
         collectionView.allowsMultipleSelection = true
+        view.addSubview(collectionView)
         
         collectionView.delegate = self
         collectionView.dataSource = self
+    }
+    
+    private func createLayout() -> UICollectionViewLayout {
+        let itemLeft = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1)))
+        itemLeft.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+        let itemRight = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1)))
+        itemRight.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+        let containerGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.7)), subitems: [itemLeft, itemRight])
+        let section = NSCollectionLayoutSection(group: containerGroup)
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
     }
     
     private func setupNavigationBar() {
@@ -96,7 +103,6 @@ class PhotoViewController: UIViewController {
               let navVC = tabBar.viewControllers?[1] as? UINavigationController,
               let favVC = navVC.topViewController as? FavouritesViewController else { return }
         favVC.photos.append(contentsOf: selectedImages)
-        favVC.collectionView.reloadData()
         refresh()
     }
     
@@ -158,25 +164,25 @@ extension PhotoViewController: UISearchBarDelegate {
     }
 }
 
-//MARK: - Extension FlowLayout
-extension PhotoViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let photo = photos[indexPath.item]
-        let paddingSpace = sectionInserts.left * (itemsPerRow + 1)
-        let avaliableWidth = view.frame.width - paddingSpace
-        let widthPerItem = avaliableWidth / itemsPerRow
-        let height = CGFloat(photo.height) * widthPerItem / CGFloat(photo.width)
-        return CGSize(width: widthPerItem, height: height)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        sectionInserts
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        sectionInserts.left
-    }
-}
+////MARK: - Extension FlowLayout
+//extension PhotoViewController: UICollectionViewDelegateFlowLayout {
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        let photo = photos[indexPath.item]
+//        let paddingSpace = sectionInserts.left * (itemsPerRow + 1)
+//        let avaliableWidth = view.frame.width - paddingSpace
+//        let widthPerItem = avaliableWidth / itemsPerRow
+//        let height = CGFloat(photo.height) * widthPerItem / CGFloat(photo.width)
+//        return CGSize(width: widthPerItem, height: height)
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+//        sectionInserts
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//        sectionInserts.left
+//    }
+//}
 
 //MARK: - SetConstaints
 extension PhotoViewController {

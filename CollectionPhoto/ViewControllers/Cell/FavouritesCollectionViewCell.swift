@@ -45,7 +45,9 @@ class FavouritesCollectionViewCell: UICollectionViewCell {
 
 //MARK: - Functions
     private func setupSubviews() {
-        self.addSubview(imageView)
+        layer.masksToBounds = true
+        layer.cornerRadius = 10
+        addSubview(imageView)
         imageView.addSubview(checkmark)
     }
     
