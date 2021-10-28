@@ -18,7 +18,7 @@ class FavouritesCollectionViewCell: UICollectionViewCell {
     }
     
 //MARK: - UI element
-    private let imageView: UIImageView = {
+    let imageView: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .scaleAspectFill
@@ -51,8 +51,11 @@ class FavouritesCollectionViewCell: UICollectionViewCell {
         imageView.addSubview(checkmark)
     }
     
-    func configure(with photo: UIImage){
-        imageView.image = photo
+    func configure(with photo: Images){
+        guard let encodedImage = photo.imageString,
+              let imageData = Data(base64Encoded: encodedImage) else { return }
+        
+        imageView.image = UIImage(data: imageData)
     }
     
     private func updateSelectedState() {

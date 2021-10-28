@@ -15,6 +15,8 @@
 		6E59E066272318A700571D9F /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E59E065272318A700571D9F /* MainTabBarViewController.swift */; };
 		6E59E06827231C6A00571D9F /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E59E06727231C6A00571D9F /* PhotoViewController.swift */; };
 		6E59E06C272324E700571D9F /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E59E06B272324E700571D9F /* NetworkService.swift */; };
+		6E72DAEC272A0DF70001BC6D /* CollectionPhoto.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6E72DAEA272A0DF70001BC6D /* CollectionPhoto.xcdatamodeld */; };
+		6E9D7550272A13FB00055245 /* CoredataService.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9D754F272A13FB00055245 /* CoredataService.swift.swift */; };
 		6EDC2670272361050052E518 /* NetworkDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDC266F272361050052E518 /* NetworkDataFetcher.swift */; };
 		6EDC26722723614E0052E518 /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDC26712723614E0052E518 /* SearchResults.swift */; };
 		6EDC267627236CB30052E518 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDC267527236CB30052E518 /* PhotoCollectionViewCell.swift */; };
@@ -33,6 +35,8 @@
 		6E59E065272318A700571D9F /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		6E59E06727231C6A00571D9F /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		6E59E06B272324E700571D9F /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		6E72DAEB272A0DF70001BC6D /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
+		6E9D754F272A13FB00055245 /* CoredataService.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoredataService.swift.swift; sourceTree = "<group>"; };
 		6EDC266F272361050052E518 /* NetworkDataFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDataFetcher.swift; sourceTree = "<group>"; };
 		6EDC26712723614E0052E518 /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 		6EDC267527236CB30052E518 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -90,6 +94,7 @@
 		6E59E0502723184E00571D9F /* CollectionPhoto */ = {
 			isa = PBXGroup;
 			children = (
+				6E9D754E272A13E400055245 /* Database */,
 				6EDC2673272361590052E518 /* Model */,
 				6E59E06A272324CF00571D9F /* Network */,
 				6E59E069272324A300571D9F /* ViewControllers */,
@@ -97,6 +102,7 @@
 				6E59E05A2723185000571D9F /* Assets.xcassets */,
 				6E59E05C2723185000571D9F /* LaunchScreen.storyboard */,
 				6E59E05F2723185000571D9F /* Info.plist */,
+				6E72DAEA272A0DF70001BC6D /* CollectionPhoto.xcdatamodeld */,
 			);
 			path = CollectionPhoto;
 			sourceTree = "<group>";
@@ -119,6 +125,14 @@
 				6EDC266F272361050052E518 /* NetworkDataFetcher.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		6E9D754E272A13E400055245 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				6E9D754F272A13FB00055245 /* CoredataService.swift.swift */,
+			);
+			path = Database;
 			sourceTree = "<group>";
 		};
 		6EDC2673272361590052E518 /* Model */ = {
@@ -254,12 +268,14 @@
 			files = (
 				6EDC267627236CB30052E518 /* PhotoCollectionViewCell.swift in Sources */,
 				6E59E06C272324E700571D9F /* NetworkService.swift in Sources */,
+				6E72DAEC272A0DF70001BC6D /* CollectionPhoto.xcdatamodeld in Sources */,
 				6EDC2670272361050052E518 /* NetworkDataFetcher.swift in Sources */,
 				6E59E06827231C6A00571D9F /* PhotoViewController.swift in Sources */,
 				6EDC2678272460B60052E518 /* FavouritesCollectionViewCell.swift in Sources */,
 				6E59E0562723184E00571D9F /* FavouritesViewController.swift in Sources */,
 				6EDC26722723614E0052E518 /* SearchResults.swift in Sources */,
 				6E59E066272318A700571D9F /* MainTabBarViewController.swift in Sources */,
+				6E9D7550272A13FB00055245 /* CoredataService.swift.swift in Sources */,
 				6E59E0522723184E00571D9F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -472,6 +488,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		6E72DAEA272A0DF70001BC6D /* CollectionPhoto.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				6E72DAEB272A0DF70001BC6D /* CoreData.xcdatamodel */,
+			);
+			currentVersion = 6E72DAEB272A0DF70001BC6D /* CoreData.xcdatamodel */;
+			path = CollectionPhoto.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 6E59E0462723184E00571D9F /* Project object */;
 }

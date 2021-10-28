@@ -11,6 +11,7 @@ class PhotoViewController: UIViewController {
     
 //MARK: - Service
     private let network = NetworkDataFetcher()
+    private let database = CoredataService()
     
 //MARK: - Properties
     private let titleCollectionView = "Photo"
@@ -97,12 +98,20 @@ class PhotoViewController: UIViewController {
         actionBarButtonItem.isEnabled = numberOfSelectedPhotos > 0
     }
     
+    private func saveImageToCoredata(with images: [UIImage]) {
+        images.forEach { image in
+            let imageString = image.pngData()!.base64EncodedString()
+            database.saveCoreData(image: imageString)
+        }
+    }
+    
 //MARK: - Navigation action
     @objc private func addBarButtonTapped() {
-        guard let tabBar = tabBarController as? MainTabBarViewController,
-              let navVC = tabBar.viewControllers?[1] as? UINavigationController,
-              let favVC = navVC.topViewController as? FavouritesViewController else { return }
-        favVC.photos.append(contentsOf: selectedImages)
+        saveImageToCoredata(with: selectedImages)
+//        guard let tabBar = tabBarController as? MainTabBarViewController,
+//              let navVC = tabBar.viewControllers?[1] as? UINavigationController,
+//              let favVC = navVC.topViewController as? FavouritesViewController else { return }
+//        favVC.photos.append(contentsOf: selectedImages)
         refresh()
     }
     
