@@ -42,4 +42,13 @@ class CoredataService {
         }
         return image
     }
+    
+    //удаление из CoreData
+    func deleteCoreData(with images: [Images]) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        images.forEach { image in
+            context.delete(image)
+        }
+    }
 }
