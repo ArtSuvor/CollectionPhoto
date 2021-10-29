@@ -21,10 +21,10 @@ class FavouritesViewController: UIViewController {
     
 //MARK: - UI elements
     private var collectionView: UICollectionView!
-    private let actionBarButton: UIBarButtonItem = {
+    private lazy var actionBarButton: UIBarButtonItem = {
         UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(actionBarButtonTapped))
     }()
-    private let trashBarButton: UIBarButtonItem = {
+    private lazy var trashBarButton: UIBarButtonItem = {
         UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(trashBarButtonTapped))
     }()
     
@@ -107,6 +107,7 @@ class FavouritesViewController: UIViewController {
     
     @objc private func trashBarButtonTapped() {
         database.deleteCoreData(with: selectedImages)
+        collectionView.reloadData()
     }
 }
 

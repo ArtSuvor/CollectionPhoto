@@ -108,10 +108,6 @@ class PhotoViewController: UIViewController {
 //MARK: - Navigation action
     @objc private func addBarButtonTapped() {
         saveImageToCoredata(with: selectedImages)
-//        guard let tabBar = tabBarController as? MainTabBarViewController,
-//              let navVC = tabBar.viewControllers?[1] as? UINavigationController,
-//              let favVC = navVC.topViewController as? FavouritesViewController else { return }
-//        favVC.photos.append(contentsOf: selectedImages)
         refresh()
     }
     
