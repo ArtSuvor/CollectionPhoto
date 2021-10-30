@@ -30,11 +30,10 @@ class CoredataService {
     
     //чтение из CoreData
     func getCoreData() -> [Images] {
+        var image: [Images] = []
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<Images> = Images.fetchRequest()
-        var image: [Images] = []
-        
         do {
             image = try context.fetch(fetchRequest)
         } catch let error {
@@ -47,8 +46,11 @@ class CoredataService {
     func deleteCoreData(with images: [Images]) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
-        images.forEach { image in
-            context.delete(image)
+        DispatchQueue.global().async {
+            images.forEach { image in
+                context.delete(image)
+                try? context.save()
+            }
         }
     }
 }

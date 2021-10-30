@@ -11,6 +11,7 @@ class FavouritesViewController: UIViewController {
 //MARK: - Properties
     private var images = [Images]()
     private var selectedImages = [Images]()
+    private var indexSelectedCells = [IndexPath]()
     private var selectedPhoto = [UIImage]()
     private var numberOfSelectedPhoto: Int {
         collectionView.indexPathsForSelectedItems?.count ?? 0
@@ -88,7 +89,7 @@ class FavouritesViewController: UIViewController {
     
     private func refresh() {
         selectedPhoto.removeAll()
-        collectionView.selectItem(at: nil, animated: true, scrollPosition: [])
+        indexSelectedCells.removeAll()
         updateButtonState()
     }
     
@@ -106,7 +107,12 @@ class FavouritesViewController: UIViewController {
     }
     
     @objc private func trashBarButtonTapped() {
+        indexSelectedCells.forEach { index in
+            images.remove(at: index.item)
+        }
         database.deleteCoreData(with: selectedImages)
+        collectionView.deleteItems(at: indexSelectedCells)
+        indexSelectedCells.removeAll()
         collectionView.reloadData()
     }
 }
@@ -129,6 +135,7 @@ extension FavouritesViewController: UICollectionViewDelegate, UICollectionViewDa
               let image = cell.imageView.image else { return }
         selectedPhoto.append(image)
         selectedImages.append(images[indexPath.item])
+        indexSelectedCells.append(indexPath)
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
