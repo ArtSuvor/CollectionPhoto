@@ -55,19 +55,26 @@ class FavouritesViewController: UIViewController {
         collectionView.contentInsetAdjustmentBehavior = .automatic
         collectionView.allowsMultipleSelection = true
         view.addSubview(collectionView)
+        
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(showFullScreen))
+        recognizer.numberOfTapsRequired = 2
+        collectionView.addGestureRecognizer(recognizer)
 
         
         collectionView.delegate = self
         collectionView.dataSource = self
     }
     
+    
+    
     private func createLayout() -> UICollectionViewLayout {
-        let itemLeft = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1)))
+        let itemLeft = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.3)))
         itemLeft.contentInsets = NSDirectionalEdgeInsets(top: 3, leading: 3, bottom: 3, trailing: 3)
         let itemRight = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.5)))
         itemRight.contentInsets = NSDirectionalEdgeInsets(top: 3, leading: 3, bottom: 3, trailing: 3)
+        let groupLeft = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1)), subitem: itemLeft, count: 3)
         let groupRight = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1)), subitem: itemRight, count: 2)
-        let containerGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.8)), subitems: [itemLeft, groupRight])
+        let containerGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.8)), subitems: [groupLeft, groupRight])
         let section = NSCollectionLayoutSection(group: containerGroup)
         section.orthogonalScrollingBehavior = UICollectionLayoutSectionOrthogonalScrollingBehavior.continuous
         let layout = UICollectionViewCompositionalLayout(section: section)
@@ -93,6 +100,7 @@ class FavouritesViewController: UIViewController {
         updateButtonState()
     }
     
+//MARK: - objc Methods
     @objc private func actionBarButtonTapped(sender: UIBarButtonItem) {
         let shareController = UIActivityViewController(activityItems: selectedPhoto, applicationActivities: nil)
         shareController.completionWithItemsHandler = {[weak self]_, bool, _, _ in
@@ -114,6 +122,14 @@ class FavouritesViewController: UIViewController {
         collectionView.deleteItems(at: indexSelectedCells)
         indexSelectedCells.removeAll()
         collectionView.reloadData()
+    }
+    
+    @objc private func showFullScreen() {
+        guard let index = collectionView.indexPathsForSelectedItems?.first else { return }
+        let fullScreenVC = FullScreenImageViewController()
+        fullScreenVC.image = images
+        fullScreenVC.indexPathFromFavorites = index
+        navigationController?.pushViewController(fullScreenVC, animated: true)
     }
 }
 

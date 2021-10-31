@@ -17,6 +17,8 @@
 		6E59E06C272324E700571D9F /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E59E06B272324E700571D9F /* NetworkService.swift */; };
 		6E72DAEC272A0DF70001BC6D /* CollectionPhoto.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6E72DAEA272A0DF70001BC6D /* CollectionPhoto.xcdatamodeld */; };
 		6E9D7550272A13FB00055245 /* CoredataService.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9D754F272A13FB00055245 /* CoredataService.swift.swift */; };
+		6EA2EB00272E2F1800EE04CC /* FullScreenImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA2EAFF272E2F1800EE04CC /* FullScreenImageViewController.swift */; };
+		6EA2EB02272E330800EE04CC /* FullScreenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA2EB01272E330800EE04CC /* FullScreenCell.swift */; };
 		6EDC2670272361050052E518 /* NetworkDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDC266F272361050052E518 /* NetworkDataFetcher.swift */; };
 		6EDC26722723614E0052E518 /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDC26712723614E0052E518 /* SearchResults.swift */; };
 		6EDC267627236CB30052E518 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDC267527236CB30052E518 /* PhotoCollectionViewCell.swift */; };
@@ -37,6 +39,8 @@
 		6E59E06B272324E700571D9F /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		6E72DAEB272A0DF70001BC6D /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
 		6E9D754F272A13FB00055245 /* CoredataService.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoredataService.swift.swift; sourceTree = "<group>"; };
+		6EA2EAFF272E2F1800EE04CC /* FullScreenImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewController.swift; sourceTree = "<group>"; };
+		6EA2EB01272E330800EE04CC /* FullScreenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCell.swift; sourceTree = "<group>"; };
 		6EDC266F272361050052E518 /* NetworkDataFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDataFetcher.swift; sourceTree = "<group>"; };
 		6EDC26712723614E0052E518 /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 		6EDC267527236CB30052E518 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -114,6 +118,7 @@
 				6E59E065272318A700571D9F /* MainTabBarViewController.swift */,
 				6E59E06727231C6A00571D9F /* PhotoViewController.swift */,
 				6E59E0552723184E00571D9F /* FavouritesViewController.swift */,
+				6EA2EAFF272E2F1800EE04CC /* FullScreenImageViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -148,6 +153,7 @@
 			children = (
 				6EDC267527236CB30052E518 /* PhotoCollectionViewCell.swift */,
 				6EDC2677272460B60052E518 /* FavouritesCollectionViewCell.swift */,
+				6EA2EB01272E330800EE04CC /* FullScreenCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -266,6 +272,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EA2EB02272E330800EE04CC /* FullScreenCell.swift in Sources */,
 				6EDC267627236CB30052E518 /* PhotoCollectionViewCell.swift in Sources */,
 				6E59E06C272324E700571D9F /* NetworkService.swift in Sources */,
 				6E72DAEC272A0DF70001BC6D /* CollectionPhoto.xcdatamodeld in Sources */,
@@ -277,6 +284,7 @@
 				6E59E066272318A700571D9F /* MainTabBarViewController.swift in Sources */,
 				6E9D7550272A13FB00055245 /* CoredataService.swift.swift in Sources */,
 				6E59E0522723184E00571D9F /* AppDelegate.swift in Sources */,
+				6EA2EB00272E2F1800EE04CC /* FullScreenImageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
