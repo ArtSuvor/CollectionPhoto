@@ -10,8 +10,8 @@ import Foundation
 class NetworkDataFetcher {
     let network = NetworkService()
     
-    func fetchImage(searchTerm: String, handler: @escaping (SearchResults?) -> ()) {
-        network.request(searchTerm: searchTerm) { data, error in
+    func fetchImage(searchTerm: String, pageNumber: Int, handler: @escaping (SearchResults?) -> ()) {
+        network.request(searchTerm: searchTerm, pageNumber: pageNumber) { data, error in
             if let error = error {
                 print("Error received requesting data: \(error.localizedDescription)")
                 handler(nil)

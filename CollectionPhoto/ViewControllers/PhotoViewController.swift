@@ -15,6 +15,9 @@ class PhotoViewController: UIViewController {
     
 //MARK: - Properties
     private let titleCollectionView = "Photo"
+    private var searchText = ""
+    private var pageNumber = 1
+    private var isLoading: Bool = false
     private var timer = Timer()
     private var photos = [Photo]()
     private var selectedImages = [UIImage]()
@@ -57,6 +60,7 @@ class PhotoViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.prefetchDataSource = self
     }
     
     private func createLayout() -> UICollectionViewLayout {
@@ -154,40 +158,42 @@ extension PhotoViewController: UICollectionViewDelegate, UICollectionViewDataSou
     }
 }
 
+//MARK: - UICollectionViewDataSourcePrefetching
+extension PhotoViewController: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        guard let section = indexPaths.map({$0.item}).max() else { return }
+        
+        if section > photos.count - 3, !isLoading {
+            isLoading = true
+            pageNumber += 1
+            network.fetchImage(searchTerm: searchText, pageNumber: pageNumber) {[weak self] photo in
+                guard let self = self,
+                      let photo = photo?.results else { return }
+                self.photos.append(contentsOf: photo)
+                self.collectionView.insertItems(at: indexPaths)
+                self.isLoading = false
+            }
+        }
+    }
+}
+
 //MARK: - Extension SearchBar
 extension PhotoViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         timer.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { _ in
-            self.network.fetchImage(searchTerm: searchText) {[weak self] searchResults in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: {[weak self] _ in
+            guard let self = self else { return }
+            self.pageNumber = 1
+            self.network.fetchImage(searchTerm: searchText, pageNumber: self.pageNumber) {[weak self] searchResults in
                 guard let fetchPhotos = searchResults,
                       let self = self else { return }
                 self.photos = fetchPhotos.results
+                self.searchText = searchText
                 self.collectionView.reloadData()
             }
         })
     }
 }
-
-////MARK: - Extension FlowLayout
-//extension PhotoViewController: UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let photo = photos[indexPath.item]
-//        let paddingSpace = sectionInserts.left * (itemsPerRow + 1)
-//        let avaliableWidth = view.frame.width - paddingSpace
-//        let widthPerItem = avaliableWidth / itemsPerRow
-//        let height = CGFloat(photo.height) * widthPerItem / CGFloat(photo.width)
-//        return CGSize(width: widthPerItem, height: height)
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//        sectionInserts
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        sectionInserts.left
-//    }
-//}
 
 //MARK: - SetConstaints
 extension PhotoViewController {

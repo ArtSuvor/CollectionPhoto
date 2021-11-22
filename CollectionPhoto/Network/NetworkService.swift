@@ -8,8 +8,8 @@
 import Foundation
 
 class NetworkService {
-    func request(searchTerm: String, handler: @escaping (Data?, Error?) -> Void) {
-        let parameters = self.prepareParameters(searchTerm: searchTerm)
+    func request(searchTerm: String, pageNumber: Int, handler: @escaping (Data?, Error?) -> Void) {
+        let parameters = self.prepareParameters(searchTerm: searchTerm, pageNumber: pageNumber)
         let url = self.url(params: parameters)
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = prepareHeader()
@@ -33,10 +33,10 @@ class NetworkService {
         return components.url!
     }
     
-    private func prepareParameters(searchTerm: String) -> [String: String] {
+    private func prepareParameters(searchTerm: String, pageNumber: Int) -> [String: String] {
         var parameters = [String: String]()
         parameters["query"] = searchTerm
-        parameters["page"] = "1"
+        parameters["page"] = "\(pageNumber)"
         parameters["per_page"] = "30"
         return parameters
     }
