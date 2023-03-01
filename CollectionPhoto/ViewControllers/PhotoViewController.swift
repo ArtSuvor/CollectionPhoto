@@ -10,7 +10,7 @@ import UIKit
 class PhotoViewController: UIViewController {
     
 //MARK: - Service
-    private let network = NetworkDataFetcher()
+    private let network = APIClient()
     private let database = CoredataService()
     
 //MARK: - Properties
@@ -166,12 +166,19 @@ extension PhotoViewController: UICollectionViewDataSourcePrefetching {
         if section > photos.count - 3, !isLoading {
             isLoading = true
             pageNumber += 1
-            network.fetchImage(searchTerm: searchText, pageNumber: pageNumber) {[weak self] photo in
-                guard let self = self,
-                      let photo = photo?.results else { return }
-                self.photos.append(contentsOf: photo)
-                self.collectionView.insertItems(at: indexPaths)
-                self.isLoading = false
+            
+            Task { [weak self] in
+                guard let self = self else { return }
+                
+                do {
+                    let photo = try await self.network.send(.photos(searchText: searchText, pageNumber: pageNumber),
+                                                             for: SearchResults.self)
+                    self.photos.append(contentsOf: photo.results)
+                    self.collectionView.insertItems(at: indexPaths)
+                    self.isLoading = false
+                } catch let error {
+                    print(error)
+                }
             }
         }
     }
@@ -181,17 +188,22 @@ extension PhotoViewController: UICollectionViewDataSourcePrefetching {
 extension PhotoViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         timer.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: {[weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) {[weak self] _ in
             guard let self = self else { return }
             self.pageNumber = 1
-            self.network.fetchImage(searchTerm: searchText, pageNumber: self.pageNumber) {[weak self] searchResults in
-                guard let fetchPhotos = searchResults,
-                      let self = self else { return }
-                self.photos = fetchPhotos.results
-                self.searchText = searchText
-                self.collectionView.reloadData()
+            
+            Task {
+                do {
+                    let photo = try await self.network.send(.photos(searchText: searchText, pageNumber: self.pageNumber),
+                                                             for: SearchResults.self)
+                    self.photos = photo.results
+                    self.searchText = searchText
+                    self.collectionView.reloadData()
+                } catch let error {
+                    print(error)
+                }
             }
-        })
+        }
     }
 }
 
